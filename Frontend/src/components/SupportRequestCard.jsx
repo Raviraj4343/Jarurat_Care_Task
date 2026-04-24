@@ -21,6 +21,7 @@ export function SupportRequestCard({ request }) {
         <span>{request.supportType}</span>
         <span>{request.location}</span>
         <span>{request.email}</span>
+        <span>{new Date(request.createdAt).toLocaleString()}</span>
       </div>
 
       <p className="request-card__message">{request.message}</p>
