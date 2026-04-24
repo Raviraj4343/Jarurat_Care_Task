@@ -1,7 +1,16 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:5000/api";
+const DEFAULT_API_BASE_URL = "http://127.0.0.1:5000/api";
+
+const normalizeApiBaseUrl = (rawBaseUrl) => {
+  const trimmedBaseUrl = (rawBaseUrl || DEFAULT_API_BASE_URL).trim().replace(/\/+$/, "");
+  return trimmedBaseUrl.endsWith("/api") ? trimmedBaseUrl : `${trimmedBaseUrl}/api`;
+};
+
+const API_BASE_URL = normalizeApiBaseUrl(import.meta.env.VITE_API_BASE_URL);
 
 export const httpClient = async (path, options = {}) => {
-  const response = await fetch(`${API_BASE_URL}${path}`, {
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+
+  const response = await fetch(`${API_BASE_URL}${normalizedPath}`, {
     headers: {
       "Content-Type": "application/json",
       ...(options.headers || {})
