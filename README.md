@@ -1,5 +1,13 @@
 # Jarurat Care
 
+![Frontend](https://img.shields.io/badge/Frontend-React-61DAFB?style=for-the-badge&logo=react&logoColor=white)
+![Build](https://img.shields.io/badge/Build-Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+![Backend](https://img.shields.io/badge/Backend-Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![Framework](https://img.shields.io/badge/Framework-Express-000000?style=for-the-badge&logo=express&logoColor=white)
+![Database](https://img.shields.io/badge/Database-MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
+![ODM](https://img.shields.io/badge/ODM-Mongoose-880000?style=for-the-badge&logo=mongoose&logoColor=white)
+![AI](https://img.shields.io/badge/AI-Google_Gemini-4285F4?style=for-the-badge&logo=google&logoColor=white)
+
 Jarurat Care is a production-minded MERN mini healthcare support web app for NGOs that collect patient and volunteer support requests, save them to MongoDB, and generate a constrained AI summary from the submitted text.
 
 ## Key Highlights
@@ -136,6 +144,7 @@ Sample request body:
   "role": "patient",
   "location": "Patna, Bihar",
   "supportType": "medical",
+  "requestPriority": "urgent",
   "message": "I need help arranging medicine and a doctor consultation for recurring fever.",
   "consent": true
 }
@@ -155,6 +164,7 @@ Successful response:
     "role": "patient",
     "location": "Patna, Bihar",
     "supportType": "medical",
+    "requestPriority": "urgent",
     "message": "I need help arranging medicine and a doctor consultation for recurring fever.",
     "consent": true,
     "aiSummary": {
