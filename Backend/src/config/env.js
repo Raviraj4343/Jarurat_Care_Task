@@ -15,6 +15,6 @@ export const env = {
   port: Number(process.env.PORT || 5000),
   mongodbUri: process.env.MONGODB_URI || "",
   clientUrl: process.env.CLIENT_URL || "http://127.0.0.1:5173",
-  openAiApiKey: process.env.OPENAI_API_KEY || "",
-  openAiModel: process.env.OPENAI_MODEL || "gpt-4o-mini"
+  geminiApiKey: process.env.GEMINI_API_KEY || "",
+  geminiModel: process.env.GEMINI_MODEL || "gemini-2.5-flash"
 };
