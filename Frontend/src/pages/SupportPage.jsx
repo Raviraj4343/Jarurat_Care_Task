@@ -38,6 +38,7 @@ export function SupportPage() {
     const searchValue = filters.search.trim().toLowerCase();
     const stateValue = filters.state.trim().toLowerCase();
     const locationValue = filters.location.trim().toLowerCase();
+    const requestLocation = (request.location || "").toLowerCase();
     const requestText = [
       request.fullName,
       request.email,
@@ -59,7 +60,7 @@ export function SupportPage() {
       return false;
     }
 
-    if (locationValue && !request.location.toLowerCase().includes(locationValue)) {
+    if (locationValue && !requestLocation.includes(locationValue)) {
       return false;
     }
 
@@ -128,9 +129,12 @@ export function SupportPage() {
         </div>
 
         <div className="panel panel--requests">
-          <div className="section-heading">
-            <h2>Submitted requests</h2>
-            <p>Each entry shows the request and the generated summary.</p>
+          <div className="section-heading section-heading--row">
+            <div>
+              <h2>Submitted requests</h2>
+              <p>Each entry shows the request and the generated summary.</p>
+            </div>
+            <span className="results-count">{filteredRequests.length} shown</span>
           </div>
 
           <div className="filters-panel">
