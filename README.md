@@ -7,7 +7,7 @@ Jarurat Care is a production-minded MERN mini healthcare support web app for NGO
 - Frontend: React with Vite
 - Backend: Node.js, Express, Mongoose
 - Database: MongoDB
-- AI: OpenAI Responses API with structured JSON output
+- AI: Gemini API via Google GenAI SDK with structured JSON output
 
 ## NGO Use-Case
 
@@ -54,8 +54,8 @@ Copy `Backend/.env.example` to `Backend/.env` and configure:
 - `PORT`
 - `MONGODB_URI`
 - `CLIENT_URL`
-- `OPENAI_API_KEY`
-- `OPENAI_MODEL`
+- `GEMINI_API_KEY`
+- `GEMINI_MODEL`
 
 ### Frontend
 
