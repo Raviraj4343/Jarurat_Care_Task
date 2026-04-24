@@ -8,258 +8,184 @@
 ![ODM](https://img.shields.io/badge/ODM-Mongoose-880000?style=for-the-badge&logo=mongoose&logoColor=white)
 ![AI](https://img.shields.io/badge/AI-Google_Gemini-4285F4?style=for-the-badge&logo=google&logoColor=white)
 
-Jarurat Care is a production-minded MERN mini healthcare support web app for NGOs that collect patient and volunteer support requests, save them to MongoDB, and generate a constrained AI summary from the submitted text.
+Assessment submission project for internship evaluation: a production-style MERN healthcare support intake app where patients and volunteers can submit support requests, which are stored in MongoDB and summarized using constrained AI output.
+
+## Live Demo
+
+- Frontend (Vercel): https://jct-theta.vercel.app
+- Backend API (Render): https://jarurat-care-task-j4h4.onrender.com
+- Health endpoint: https://jarurat-care-task-j4h4.onrender.com/api/health
+
+## Reviewer Quick Check (2 minutes)
+
+1. Open the frontend live link.
+2. Submit a test request from the form.
+3. Confirm the request appears in Submitted requests.
+4. Confirm AI summary fields appear: issueSummary, category, suggestion.
+5. Open the health endpoint to verify backend availability.
 
 ## Key Highlights
 
-- MERN-based full-stack healthcare support intake app
-- Cleanly separated frontend and backend architecture
-- Gemini-powered structured AI summary with strict prompt constraints
-- Form validation on both frontend and backend
-- Centralized error handling and consistent API responses
-- Scrollable submitted-request dashboard with search and filters
-- Environment-based configuration for secure secret handling
+- Full-stack MERN architecture with clear frontend and backend separation
+- Structured AI summary generation with safe fallback behavior
+- Validation on both client and server
+- Search and filter-enabled request dashboard
+- Centralized API response and error handling
+- Deployment-ready environment configuration and CORS controls
 
 ## Tech Stack
 
-- Frontend: React with Vite
-- Backend: Node.js, Express, Mongoose
-- Database: MongoDB
-- AI: Gemini API via Google GenAI SDK with structured JSON output
+- Frontend: React + Vite
+- Backend: Node.js + Express + Mongoose
+- Database: MongoDB Atlas
+- AI: Google Gemini (via @google/genai)
 
-## NGO Use-Case
+## Problem Statement
 
-An NGO can use this app to intake healthcare-related support needs from patients and volunteers, organize requests centrally, and quickly review a short AI-assisted summary without losing the original message context.
+NGOs often receive scattered healthcare support requests from patients and volunteers. This app centralizes intake, preserves original context, and adds a short AI-generated summary to help triage quickly.
 
 ## Architecture Overview
 
-The project is split into two independently runnable applications:
+### Frontend
 
-- `Frontend/` contains the React client built with reusable components, a hooks-based state layer, and a small API abstraction layer.
-- `Backend/` contains the Express API with modular folders for routes, controllers, services, middleware, validators, and database models.
+- Reusable form and UI components
+- Custom hooks for theme and request state management
+- API abstraction layer with resilient base URL handling
 
-### Backend Flow
+### Backend
 
-1. A client submits a support request to the Express API.
-2. Request validation runs before controller logic.
-3. The controller delegates business logic to the service layer.
-4. The service generates an AI summary and stores the request in MongoDB.
-5. The API returns a structured success or error response.
-
-### Frontend Flow
-
-1. The user fills out the healthcare support form.
-2. Client-side validation checks the input before submission.
-3. The request is sent through a dedicated API service.
-4. Loading, success, and error states are handled through a custom hook.
-5. Submitted requests are rendered in a scrollable list with filters.
+- Layered structure: routes, controllers, services, validators, middleware
+- MongoDB persistence using Mongoose models
+- AI service isolated from request orchestration
+- Configurable CORS for production deployment scenarios
 
 ## Project Structure
 
-```text
+~~~text
 Backend/
   src/
-    config/        # environment and database setup
-    controllers/   # request handlers
-    middleware/    # error, validation, not-found handling
-    models/        # mongoose schemas
-    routes/        # express route modules
-    services/      # business logic and Gemini integration
-    utils/         # shared helpers and response utilities
-    validators/    # request validation logic
+    config/
+    controllers/
+    middleware/
+    models/
+    routes/
+    services/
+    utils/
+    validators/
 Frontend/
   src/
-    api/           # HTTP client and API methods
-    components/    # reusable UI components
-    hooks/         # stateful frontend logic
-    pages/         # page-level composition
-    styles/        # global styles
-```
+    api/
+    components/
+    hooks/
+    pages/
+    styles/
+~~~
 
-## AI Feature
+## API Endpoints
 
-The backend sends only the submitted role, support type, and message to the AI service. The model is instructed to return:
+Base URL (production): https://jarurat-care-task-j4h4.onrender.com/api
 
-- `issueSummary`
-- `category` as `mild`, `urgent`, or `unknown`
-- `suggestion`
+- GET /health
+- GET /support-requests
+- POST /support-requests
 
-The prompt explicitly tells the model to use only the provided input and not introduce extra facts or inferred medical claims. If the AI service is unavailable, the backend falls back to a minimal manual-safe summary so submissions still succeed.
+Sample success response shape:
 
-## API Documentation
-
-Base URL:
-
-```text
-http://127.0.0.1:5000/api
-```
-
-### Health Check
-
-`GET /health`
-
-Purpose:
-Check whether the backend is running successfully.
-
-Example response:
-
-```json
-{
-  "success": true,
-  "message": "Backend is healthy"
-}
-```
-
-### Get All Support Requests
-
-`GET /support-requests`
-
-Purpose:
-Fetch all submitted support requests, sorted by newest first.
-
-Example response:
-
-```json
-{
-  "success": true,
-  "message": "Support requests fetched successfully",
-  "data": []
-}
-```
-
-### Submit Support Request
-
-`POST /support-requests`
-
-Purpose:
-Create a new healthcare support request and generate its AI summary.
-
-Sample request body:
-
-```json
-{
-  "fullName": "Ravi Kumar",
-  "email": "ravi@example.com",
-  "phone": "9876543210",
-  "role": "patient",
-  "location": "Patna, Bihar",
-  "supportType": "medical",
-  "requestPriority": "urgent",
-  "message": "I need help arranging medicine and a doctor consultation for recurring fever.",
-  "consent": true
-}
-```
-
-Successful response:
-
-```json
+~~~json
 {
   "success": true,
   "message": "Support request submitted successfully",
   "data": {
-    "_id": "661234567890abcdef123456",
     "fullName": "Ravi Kumar",
-    "email": "ravi@example.com",
-    "phone": "9876543210",
     "role": "patient",
-    "location": "Patna, Bihar",
     "supportType": "medical",
-    "requestPriority": "urgent",
-    "message": "I need help arranging medicine and a doctor consultation for recurring fever.",
-    "consent": true,
+    "message": "...",
     "aiSummary": {
-      "issueSummary": "The patient needs help arranging medicine and a doctor consultation for recurring fever.",
+      "issueSummary": "...",
       "category": "mild",
-      "suggestion": "Arrange medicine support and a doctor consultation."
-    },
-    "createdAt": "2026-04-24T09:56:42.698Z",
-    "updatedAt": "2026-04-24T09:56:42.698Z"
+      "suggestion": "..."
+    }
   },
   "error": null
 }
-```
+~~~
 
-Validation error response shape:
+## AI Summary Design
 
-```json
-{
-  "success": false,
-  "message": "Validation failed",
-  "data": null,
-  "error": {
-    "code": "VALIDATION_ERROR",
-    "details": [
-      "A valid email address is required."
-    ]
-  }
-}
-```
+The backend sends only relevant request context to the model and expects a strict structured output:
 
-## Design Decisions
+- issueSummary
+- category: mild or urgent or unknown
+- suggestion
 
-- Modular backend structure was chosen to keep controllers thin and business logic reusable.
-- Request validation exists on both frontend and backend to improve UX while still protecting the API.
-- The frontend uses a dedicated API service layer so UI components stay focused on rendering.
-- The AI service is isolated in its own backend service to keep external provider logic separate from core request handling.
-- Structured JSON output was used for the AI summary to make frontend rendering predictable.
-- A safe fallback summary is returned when the AI provider fails so the NGO intake flow does not break.
-- Filtering and scrolling were added to the submitted-requests section so the interface stays usable as records grow.
+If AI fails, the request still gets saved with a safe fallback summary so the intake flow does not break.
 
-## Deployment Notes
+## Local Setup
 
-This project can be deployed as two separate services:
+### 1) Backend
 
-- Frontend: Vercel, Netlify, or any static hosting platform that supports Vite builds
-- Backend: Render, Railway, Cyclic, or any Node.js hosting platform
-- Database: MongoDB Atlas for a managed production database
+Copy Backend/.env.example to Backend/.env and set:
 
-### Recommended Deployment Setup
+- PORT
+- MONGODB_URI
+- CLIENT_URL
+- CLIENT_URLS (comma-separated allowed origins, optional)
+- GEMINI_API_KEY
+- GEMINI_MODEL
 
-- Deploy the backend first and expose the `/api` routes publicly.
-- Set `CLIENT_URL` in the backend environment to the deployed frontend URL.
-- Set `VITE_API_BASE_URL` in the frontend environment to the deployed backend API URL.
-- Store `MONGODB_URI` and `GEMINI_API_KEY` only in deployment environment variables, never in source control.
+Run:
 
-### Production Considerations
-
-- Add rate limiting for public form submissions
-- Add request logging and monitoring
-- Restrict CORS to known frontend origins
-- Use HTTPS-only deployments
-- Add authentication if NGO staff-only dashboard features are introduced later
-
-## Environment Setup
-
-### Backend
-
-Copy `Backend/.env.example` to `Backend/.env` and configure:
-
-- `PORT`
-- `MONGODB_URI`
-- `CLIENT_URL`
-- `GEMINI_API_KEY`
-- `GEMINI_MODEL`
-
-### Frontend
-
-Copy `Frontend/.env.example` to `Frontend/.env` and configure:
-
-- `VITE_API_BASE_URL`
-
-## Run Locally
-
-Install dependencies in both apps, then start them in separate terminals:
-
-```bash
+~~~bash
 cd Backend
 npm install
 npm run dev
-```
+~~~
 
-```bash
+### 2) Frontend
+
+Copy Frontend/.env.example to Frontend/.env and set:
+
+- VITE_API_BASE_URL
+
+Run:
+
+~~~bash
 cd Frontend
 npm install
 npm run dev
-```
+~~~
 
-The frontend expects the backend on `http://127.0.0.1:5000` by default.
+## Deployment Summary
+
+### Frontend (Vercel)
+
+- Root directory: Frontend
+- Build command: npm run build
+- Output directory: dist
+- Environment variable:
+  - VITE_API_BASE_URL=https://jarurat-care-task-j4h4.onrender.com
+
+### Backend (Render)
+
+- Root directory: Backend
+- Build command: npm install
+- Start command: npm start
+- Environment variables:
+  - NODE_ENV=production
+  - MONGODB_URI=your_mongodb_uri
+  - GEMINI_API_KEY=your_key
+  - GEMINI_MODEL=gemini-2.5-flash
+  - CLIENT_URL=https://jct-theta.vercel.app
+  - CLIENT_URLS=https://jct-theta.vercel.app,https://jct-3unrgwsr8-ravis-projects-ac4ec6cb.vercel.app
+
+## Engineering Decisions
+
+- Kept controllers thin and moved orchestration into services
+- Implemented defensive frontend API URL normalization and retry behavior
+- Added multi-origin aware CORS handling for Vercel production and preview domains
+- Preserved consistent API response shape for reliable frontend rendering
+
+## Notes For Evaluators
+
+- This implementation focuses on code clarity, reliability in deployment, and practical production concerns (validation, error handling, CORS, env management).
+- The app is intentionally scoped and modular to make future features easy to add (auth, staff dashboard, rate limiting, audit logs).
