@@ -54,6 +54,11 @@ const supportRequestSchema = new mongoose.Schema(
       required: true,
       enum: ["medical", "mental-health", "transport", "medicine", "food", "other"]
     },
+    requestPriority: {
+      type: String,
+      required: true,
+      enum: ["normal", "urgent", "mild"]
+    },
     message: {
       type: String,
       required: true,
