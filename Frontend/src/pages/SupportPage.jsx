@@ -30,6 +30,7 @@ export function SupportPage() {
     location: "",
     role: "all",
     supportType: "all",
+    requestPriority: "all",
     category: "all"
   });
 
@@ -70,6 +71,10 @@ export function SupportPage() {
       return false;
     }
 
+    if (filters.requestPriority !== "all" && request.requestPriority !== filters.requestPriority) {
+      return false;
+    }
+
     if (filters.category !== "all" && request.aiSummary?.category !== filters.category) {
       return false;
     }
@@ -89,6 +94,7 @@ export function SupportPage() {
       location: "",
       role: "all",
       supportType: "all",
+      requestPriority: "all",
       category: "all"
     });
   };
@@ -186,6 +192,17 @@ export function SupportPage() {
               <option value="urgent">Urgent</option>
               <option value="mild">Mild</option>
               <option value="unknown">Unknown</option>
+            </select>
+            <select
+              className="field__input"
+              name="requestPriority"
+              value={filters.requestPriority}
+              onChange={handleFilterChange}
+            >
+              <option value="all">All user priorities</option>
+              <option value="normal">Normal</option>
+              <option value="urgent">Urgent</option>
+              <option value="mild">Mild</option>
             </select>
             <button className="filter-reset-button" type="button" onClick={resetFilters}>
               Clear filters

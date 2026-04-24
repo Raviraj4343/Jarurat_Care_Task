@@ -8,6 +8,7 @@ const initialFormState = {
   role: "patient",
   location: "",
   supportType: "medical",
+  requestPriority: "normal",
   message: "",
   consent: false
 };

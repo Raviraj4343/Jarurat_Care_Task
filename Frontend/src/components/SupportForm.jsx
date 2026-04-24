@@ -17,6 +17,12 @@ const supportTypeOptions = [
   { value: "other", label: "Other" }
 ];
 
+const requestPriorityOptions = [
+  { value: "normal", label: "Normal" },
+  { value: "urgent", label: "Urgent" },
+  { value: "mild", label: "Mild" }
+];
+
 const validateForm = (values) => {
   const errors = {};
 
@@ -133,6 +139,13 @@ export function SupportForm({ initialValues, isSubmitting, onSubmit, onFocusFiel
           value={formValues.supportType}
           onChange={handleChange}
           options={supportTypeOptions}
+        />
+        <SelectField
+          id="requestPriority"
+          label="Request priority"
+          value={formValues.requestPriority}
+          onChange={handleChange}
+          options={requestPriorityOptions}
         />
       </div>
 

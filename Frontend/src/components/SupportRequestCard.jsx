@@ -19,6 +19,7 @@ export function SupportRequestCard({ request }) {
 
       <div className="request-card__meta">
         <span>{request.supportType}</span>
+        <span>User priority: {request.requestPriority}</span>
         <span>{request.location}</span>
         <span>{request.email}</span>
         <span>{new Date(request.createdAt).toLocaleString()}</span>
